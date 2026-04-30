@@ -67,6 +67,38 @@ public class AccountGroup {
         return members;
     }
 
+    public List<Account> getMembersExcluding(Account account) {
+        List<Account> others = new ArrayList<>();
+        for (Account member : this.members) {
+            if (member != account) {
+                others.add(member);
+            }
+        }
+        return others;
+    }
+
+    public List<Account> getMembersInBeneList(Account account) {
+        List<Account> candidates = new ArrayList<>();
+        List<Account> beneList = account.getBeneList();
+        for (Account member : this.members) {
+            if (member != account && beneList.contains(member)) {
+                candidates.add(member);
+            }
+        }
+        return candidates;
+    }
+
+    public List<Account> getMembersInOrigList(Account account) {
+        List<Account> candidates = new ArrayList<>();
+        List<Account> origList = account.getOrigList();
+        for (Account member : this.members) {
+            if (member != account && origList.contains(member)) {
+                candidates.add(member);
+            }
+        }
+        return candidates;
+    }
+
     /**
      * Get the main account
      * @return The main account if exists.

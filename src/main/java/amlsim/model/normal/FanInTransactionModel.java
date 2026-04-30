@@ -44,8 +44,11 @@ public class FanInTransactionModel extends AbstractTransactionModel {
 
     @Override
     public void sendTransactions(long step, Account account) {
-        List<Account> beneList = account.getBeneList();  // Destination accounts
-        int numOrigs = beneList.size();
+        List<Account> origList = this.accountGroup.getMembersInOrigList(account);
+        if (origList.isEmpty()) {
+            origList = account.getOrigList();
+        }
+        int numOrigs = origList.size();
         if (!isValidStep(step) || numOrigs == 0) {
             return;
         }
@@ -53,12 +56,11 @@ public class FanInTransactionModel extends AbstractTransactionModel {
             index = 0;
         }
 
-        this.transactionAmount = new TargetedTransactionAmount(account.getBalance(), this.random);
+        Account orig = origList.get(index);
+        this.transactionAmount = new TargetedTransactionAmount(orig.getBalance(), this.random);
         double amount = this.transactionAmount.doubleValue();
-        
-        Account bene = beneList.get(index);
 
-        makeTransaction(step, amount, account, bene);
+        makeTransaction(step, amount, orig, account);
         index++;
     }
 }

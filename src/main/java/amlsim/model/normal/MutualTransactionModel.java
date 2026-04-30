@@ -37,7 +37,20 @@ public class MutualTransactionModel extends AbstractTransactionModel {
     public void sendTransactions(long step, Account account) {
         if((step - this.startStep) % interval != 0)return;
 
-        Account counterpart = account.getPrevOrig();
+        Account counterpart = null;
+        List<Account> origMembers = this.accountGroup.getMembersInOrigList(account);
+        if (!origMembers.isEmpty()) {
+            counterpart = origMembers.get(0);
+        }
+        if(counterpart == null){
+            List<Account> groupMembers = this.accountGroup.getMembersExcluding(account);
+            if(!groupMembers.isEmpty()) {
+                counterpart = groupMembers.get(0);
+            }
+        }
+        if(counterpart == null){
+            counterpart = account.getPrevOrig();
+        }
         if(counterpart == null){
             List<Account> origs = account.getOrigList();
             if(origs.isEmpty()) {

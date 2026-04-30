@@ -41,7 +41,10 @@ public class FanOutTransactionModel extends AbstractTransactionModel {
 
     @Override
     public void sendTransactions(long step, Account account) {
-        List<Account> beneList = account.getBeneList();  // Destination accounts
+        List<Account> beneList = this.accountGroup.getMembersInBeneList(account);
+        if (beneList.isEmpty()) {
+            beneList = account.getBeneList();
+        }
         int numBene = beneList.size();
         if (!isValidStep(step) || numBene == 0) { // No more destination accounts
             return;

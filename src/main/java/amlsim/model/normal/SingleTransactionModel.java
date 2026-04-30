@@ -45,7 +45,10 @@ public class SingleTransactionModel extends AbstractTransactionModel {
     }
     
     public void sendTransactions(long step, Account account){
-        List<Account> beneList = account.getBeneList();
+        List<Account> beneList = this.accountGroup.getMembersInBeneList(account);
+        if (beneList.isEmpty()) {
+            beneList = account.getBeneList();
+        }
         int numBene = beneList.size();
         if(step != this.txStep || numBene == 0){
             return;

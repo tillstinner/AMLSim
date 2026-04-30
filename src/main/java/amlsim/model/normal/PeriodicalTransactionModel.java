@@ -1,5 +1,6 @@
 package amlsim.model.normal;
 
+import java.util.List;
 import java.util.Random;
 
 import amlsim.Account;
@@ -43,10 +44,14 @@ public class PeriodicalTransactionModel extends AbstractTransactionModel {
 
     @Override
     public void sendTransactions(long step, Account account) {
-        if(!isValidStep(step) || account.getBeneList().isEmpty()){
+        List<Account> beneList = this.accountGroup.getMembersInBeneList(account);
+        if (beneList.isEmpty()) {
+            beneList = account.getBeneList();
+        }
+        if(!isValidStep(step) || beneList.isEmpty()){
             return;
         }
-        int numDests = account.getBeneList().size();
+        int numDests = beneList.size();
         if(index >= numDests){
             index = 0;
         }
@@ -57,7 +62,7 @@ public class PeriodicalTransactionModel extends AbstractTransactionModel {
         TargetedTransactionAmount transactionAmount = new TargetedTransactionAmount(account.getBalance() / eachCount, random);
 
         for (int i = 0; i < eachCount; i++) {
-            Account dest = account.getBeneList().get(index);
+            Account dest = beneList.get(index);
             this.makeTransaction(step, transactionAmount.doubleValue(), account, dest);
             index++;
             if (index >= numDests)
