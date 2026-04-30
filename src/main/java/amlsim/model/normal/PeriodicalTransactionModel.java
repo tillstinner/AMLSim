@@ -13,6 +13,7 @@ import amlsim.model.AbstractTransactionModel;
  * Send money to neighbors periodically
  */
 public class PeriodicalTransactionModel extends AbstractTransactionModel {
+    private static final double GROUP_MEMBER_BIAS = 0.55;
 
     private int index = 0;
 
@@ -44,10 +45,7 @@ public class PeriodicalTransactionModel extends AbstractTransactionModel {
 
     @Override
     public void sendTransactions(long step, Account account) {
-        List<Account> beneList = this.accountGroup.getMembersInBeneList(account);
-        if (beneList.isEmpty()) {
-            beneList = account.getBeneList();
-        }
+        List<Account> beneList = this.accountGroup.getPreferredBeneList(account, this.random, GROUP_MEMBER_BIAS);
         if(!isValidStep(step) || beneList.isEmpty()){
             return;
         }

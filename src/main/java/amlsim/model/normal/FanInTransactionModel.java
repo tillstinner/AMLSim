@@ -11,6 +11,7 @@ import java.util.*;
  * Receive money from one of the senders (fan-in)
  */
 public class FanInTransactionModel extends AbstractTransactionModel {
+    private static final double GROUP_MEMBER_BIAS = 0.55;
 
     private int index = 0;
 
@@ -44,10 +45,7 @@ public class FanInTransactionModel extends AbstractTransactionModel {
 
     @Override
     public void sendTransactions(long step, Account account) {
-        List<Account> origList = this.accountGroup.getMembersInOrigList(account);
-        if (origList.isEmpty()) {
-            origList = account.getOrigList();
-        }
+        List<Account> origList = this.accountGroup.getPreferredOrigList(account, this.random, GROUP_MEMBER_BIAS);
         int numOrigs = origList.size();
         if (!isValidStep(step) || numOrigs == 0) {
             return;

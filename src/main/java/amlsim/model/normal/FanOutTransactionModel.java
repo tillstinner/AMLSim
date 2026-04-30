@@ -9,6 +9,7 @@ import java.util.*;
  * Distribute money to multiple neighboring accounts (fan-out)
  */
 public class FanOutTransactionModel extends AbstractTransactionModel {
+    private static final double GROUP_MEMBER_BIAS = 0.55;
 
     private int index = 0;
     
@@ -41,10 +42,7 @@ public class FanOutTransactionModel extends AbstractTransactionModel {
 
     @Override
     public void sendTransactions(long step, Account account) {
-        List<Account> beneList = this.accountGroup.getMembersInBeneList(account);
-        if (beneList.isEmpty()) {
-            beneList = account.getBeneList();
-        }
+        List<Account> beneList = this.accountGroup.getPreferredBeneList(account, this.random, GROUP_MEMBER_BIAS);
         int numBene = beneList.size();
         if (!isValidStep(step) || numBene == 0) { // No more destination accounts
             return;

@@ -99,6 +99,30 @@ public class AccountGroup {
         return candidates;
     }
 
+    public List<Account> getPreferredBeneList(Account account, Random random, double groupBias) {
+        List<Account> groupCandidates = this.getMembersInBeneList(account);
+        List<Account> beneList = account.getBeneList();
+        if (groupCandidates.isEmpty()) {
+            return beneList;
+        }
+        if (beneList.isEmpty()) {
+            return groupCandidates;
+        }
+        return random.nextDouble() < groupBias ? groupCandidates : beneList;
+    }
+
+    public List<Account> getPreferredOrigList(Account account, Random random, double groupBias) {
+        List<Account> groupCandidates = this.getMembersInOrigList(account);
+        List<Account> origList = account.getOrigList();
+        if (groupCandidates.isEmpty()) {
+            return origList;
+        }
+        if (origList.isEmpty()) {
+            return groupCandidates;
+        }
+        return random.nextDouble() < groupBias ? groupCandidates : origList;
+    }
+
     /**
      * Get the main account
      * @return The main account if exists.

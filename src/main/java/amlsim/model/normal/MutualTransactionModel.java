@@ -10,6 +10,8 @@ import java.util.Random;
  * Return money to one of the previous senders
  */
 public class MutualTransactionModel extends AbstractTransactionModel {
+    private static final double GROUP_MEMBER_BIAS = 0.60;
+
 
     private Random random;
 
@@ -39,13 +41,13 @@ public class MutualTransactionModel extends AbstractTransactionModel {
 
         Account counterpart = null;
         List<Account> origMembers = this.accountGroup.getMembersInOrigList(account);
-        if (!origMembers.isEmpty()) {
-            counterpart = origMembers.get(0);
+        if (!origMembers.isEmpty() && this.random.nextDouble() < GROUP_MEMBER_BIAS) {
+            counterpart = origMembers.get(this.random.nextInt(origMembers.size()));
         }
         if(counterpart == null){
             List<Account> groupMembers = this.accountGroup.getMembersExcluding(account);
             if(!groupMembers.isEmpty()) {
-                counterpart = groupMembers.get(0);
+                counterpart = groupMembers.get(this.random.nextInt(groupMembers.size()));
             }
         }
         if(counterpart == null){
@@ -56,7 +58,7 @@ public class MutualTransactionModel extends AbstractTransactionModel {
             if(origs.isEmpty()) {
                 return;
             }else{
-                counterpart = origs.get(0);
+                counterpart = origs.get(this.random.nextInt(origs.size()));
             }
         }
 

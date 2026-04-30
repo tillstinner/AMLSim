@@ -11,6 +11,8 @@ import java.util.*;
  * Send money received from an account to another account in a similar way
  */
 public class ForwardTransactionModel extends AbstractTransactionModel {
+    private static final double GROUP_MEMBER_BIAS = 0.55;
+
     private int index = 0;
 
     private Random random;
@@ -41,19 +43,19 @@ public class ForwardTransactionModel extends AbstractTransactionModel {
             return;
         }
 
-        List<Account> origs = this.accountGroup.getMembersInOrigList(account);
-        List<Account> dests = this.accountGroup.getMembersInBeneList(account);
+        List<Account> groupOrigs = this.accountGroup.getMembersInOrigList(account);
+        List<Account> groupDests = this.accountGroup.getMembersInBeneList(account);
 
-        if (!origs.isEmpty() && !dests.isEmpty()) {
-            if(index >= dests.size()){
+        if (!groupOrigs.isEmpty() && !groupDests.isEmpty() && this.random.nextDouble() < GROUP_MEMBER_BIAS) {
+            if(index >= groupDests.size()){
                 index = 0;
             }
 
-            Account orig = origs.get(index % origs.size());
+            Account orig = groupOrigs.get(index % groupOrigs.size());
             TargetedTransactionAmount upstreamAmount = new TargetedTransactionAmount(orig.getBalance(), random);
             this.makeTransaction(step, upstreamAmount.doubleValue(), orig, account);
 
-            Account dest = dests.get(index);
+            Account dest = groupDests.get(index);
             TargetedTransactionAmount downstreamAmount = new TargetedTransactionAmount(account.getBalance(), random);
             this.makeTransaction(step, downstreamAmount.doubleValue(), account, dest);
             index++;
@@ -61,7 +63,7 @@ public class ForwardTransactionModel extends AbstractTransactionModel {
         }
 
         TargetedTransactionAmount transactionAmount = new TargetedTransactionAmount(account.getBalance(), random);
-        dests = account.getBeneList();
+        List<Account> dests = account.getBeneList();
         int numDests = dests.size();
         if(numDests == 0){
             return;
