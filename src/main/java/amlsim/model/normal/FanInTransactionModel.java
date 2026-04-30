@@ -11,7 +11,7 @@ import java.util.*;
  * Receive money from one of the senders (fan-in)
  */
 public class FanInTransactionModel extends AbstractTransactionModel {
-    private static final double GROUP_MEMBER_BIAS = 0.55;
+    private static final double GROUP_MEMBER_BIAS = 0.80;
 
     private int index = 0;
 
