@@ -9,7 +9,7 @@ import java.util.*;
  * Distribute money to multiple neighboring accounts (fan-out)
  */
 public class FanOutTransactionModel extends AbstractTransactionModel {
-    private static final double GROUP_MEMBER_BIAS = 0.80;
+    private static final double GROUP_MEMBER_BIAS = 0.85;
 
     private int index = 0;
     

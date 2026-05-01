@@ -13,7 +13,7 @@ import java.util.Random;
  * Send money only for once to one of the neighboring accounts regardless the transaction interval parameter
  */
 public class SingleTransactionModel extends AbstractTransactionModel {
-    private static final double GROUP_MEMBER_BIAS = 0.85;
+    private static final double GROUP_MEMBER_BIAS = 0.90;
 
     /**
      * Simulation step when this transaction is done

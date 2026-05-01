@@ -10,7 +10,7 @@ import java.util.Random;
  * Return money to one of the previous senders
  */
 public class MutualTransactionModel extends AbstractTransactionModel {
-    private static final double GROUP_MEMBER_BIAS = 0.70;
+    private static final double GROUP_MEMBER_BIAS = 0.75;
 
 
     private Random random;

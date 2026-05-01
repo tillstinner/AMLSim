@@ -13,7 +13,7 @@ import amlsim.model.AbstractTransactionModel;
  * Send money to neighbors periodically
  */
 public class PeriodicalTransactionModel extends AbstractTransactionModel {
-    private static final double GROUP_MEMBER_BIAS = 0.70;
+    private static final double GROUP_MEMBER_BIAS = 0.78;
 
     private int index = 0;
 

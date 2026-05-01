@@ -11,7 +11,7 @@ import java.util.*;
  * Send money received from an account to another account in a similar way
  */
 public class ForwardTransactionModel extends AbstractTransactionModel {
-    private static final double GROUP_MEMBER_BIAS = 0.70;
+    private static final double GROUP_MEMBER_BIAS = 0.75;
 
     private int index = 0;
 
